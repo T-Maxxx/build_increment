@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 	
 	if (!inputFileName)
 	{
-		printf("Use -i 'filename' to set input file name.");
+		printf("Use -i 'filename' to set input file name.\n");
 		return 1;
 	}
 
@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 
 	if (!f)
 	{
-		printf("Can't open file '%s' for reading.", inputFileName);
+		printf("Can't open file '%s' for reading.\n", inputFileName);
 		return 4;
 	}
 
@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 	
 	if (!linePrefix)
 	{
-		printf("Use -p 'linePrefix' to set line prefix.");
+		printf("Use -p 'linePrefix' to set line prefix.\n");
 		return 2;
 	}
 
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
 
 	if (!strstr(buffer, linePrefix))
 	{
-		printf("Prefix '%s' is not found in '%s'.", linePrefix, inputFileName);
+		printf("Prefix '%s' is not found in '%s'.\n", linePrefix, inputFileName);
 		return 3;
 	}
 
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
 	
 	if (!f)
 	{
-		printf("Can't open file '%s' for writing.", inputFileName);
+		printf("Can't open file '%s' for writing.\n", inputFileName);
 		return 5;
 	}
 	sprintf(buffer, "%s %d\n", linePrefix, buildNum);
@@ -79,6 +79,6 @@ int main(int argc, char* argv[])
 	fflush(f);
 	fclose(f);
 
-	printf("'%s' done. New build set to %d.", argv[0], buildNum);
+	printf("'%s' done. New build set to %d.\n", argv[0], buildNum);
 	return 0;
 }
