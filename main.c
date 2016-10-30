@@ -1,8 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <cstdio>
-#include <cstring>
-#include <cstdlib>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define BUFF_SIZE 512
 
@@ -11,15 +11,19 @@ int main(int argc, char* argv[])
 	char* inputFileName = NULL;
 	char* linePrefix = NULL;
 	char buffer[BUFF_SIZE] = {'\0'};
+	int i;
+	FILE* f;
+	int lineLen;
+	int buildNum;
 
-	// Parse args.
-	for (int i = 1; i < argc; ++i)
+	/* Parse args. */
+	for (i = 1; i < argc; ++i)
 	{
 		if (argv[i][0] == '-')
 		{
-			if (argv[i][1] == 'i') // input file.
+			if (argv[i][1] == 'i') /* Input file. */
 				inputFileName = argv[i + 1];
-			else if (argv[i][1] == 'p') // line prefix.
+			else if (argv[i][1] == 'p') /* Line prefix. */
 				linePrefix = argv[i + 1];
 
 			++i;
@@ -28,20 +32,20 @@ int main(int argc, char* argv[])
 	
 	if (!inputFileName)
 	{
-		printf("Use -i 'filename' to set input file name.\n");
+		fprintf(stdout, "Use -i 'filename' to set input file name.\n");
 		return 1;
 	}
 
-	FILE* f = fopen(inputFileName, "r");
+	f = fopen(inputFileName, "r");
 
 	if (!f)
 	{
-		printf("Can't open file '%s' for reading.\n", inputFileName);
+		fprintf(stdout, "Can't open file '%s' for reading.\n", inputFileName);
 		return 4;
 	}
 
 	fseek(f, 0, SEEK_END);
-	int lineLen = ftell(f);
+	lineLen = ftell(f);
 	fseek(f, 0, SEEK_SET);
 
 	fread(buffer, 1, lineLen, f);
@@ -49,7 +53,7 @@ int main(int argc, char* argv[])
 	
 	if (!linePrefix)
 	{
-		printf("Use -p 'linePrefix' to set line prefix.\n");
+		fprintf(stdout, "Use -p 'linePrefix' to set line prefix.\n");
 		return 2;
 	}
 
@@ -61,17 +65,17 @@ int main(int argc, char* argv[])
 
 	if (!strstr(buffer, linePrefix))
 	{
-		printf("Prefix '%s' is not found in '%s'.\n", linePrefix, inputFileName);
+		fprintf(stdout, "Prefix '%s' is not found in '%s'.\n", linePrefix, inputFileName);
 		return 3;
 	}
 
-	int buildNum = atoi(buffer + strlen(linePrefix)) + 1;
+	buildNum = atoi(buffer + strlen(linePrefix)) + 1;
 
 	f = fopen(inputFileName, "w");
 	
 	if (!f)
 	{
-		printf("Can't open file '%s' for writing.\n", inputFileName);
+		fprintf(stdout, "Can't open file '%s' for writing.\n", inputFileName);
 		return 5;
 	}
 	sprintf(buffer, "%s %d\n", linePrefix, buildNum);
@@ -79,6 +83,6 @@ int main(int argc, char* argv[])
 	fflush(f);
 	fclose(f);
 
-	printf("'%s' done. New build set to %d.\n", argv[0], buildNum);
+	fprintf(stdout, "'%s' done. New build set to %d.\n", argv[0], buildNum);
 	return 0;
 }
